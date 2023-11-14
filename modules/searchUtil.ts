@@ -11,7 +11,7 @@ export async function query(queryParam: string, pageSize?: number): Promise<quer
 			"Accept": "*/*",
 			"Accept-Language": "en-US,en;q=0.5",
 			"Content-Type": "application/json-patch+json",
-			"x-csrf-token": "HfVqlpeeZjcc",
+			"x-csrf-token": "" + process.env.CSRFTOKEN,
 			"Sec-Fetch-Dest": "empty",
 			"Sec-Fetch-Mode": "cors",
 			"Sec-Fetch-Site": "same-site"

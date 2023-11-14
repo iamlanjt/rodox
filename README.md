@@ -1,15 +1,12 @@
 # rodox
+A prototype Discord bot that transforms slash commands into Roblox API Documentation search queries.
 
-To install dependencies:
+# Future
+Currently, rodox only supports searching the highest-level query resource, but in the future it will support individual properties, methods, articles, and code samples.
 
-```bash
-bun install
+# Env
+.env example:
+```env
+TOKEN="discordBotToken"
+CSRF="csrfToken"
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.0.1. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
