@@ -8,5 +8,4 @@ Currently, rodox only supports searching the highest-level query resource, but i
 .env example:
 ```env
 TOKEN="discordBotToken"
-CSRF="csrfToken"
 ```

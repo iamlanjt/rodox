@@ -4,6 +4,7 @@ import { queryChunk } from "../interfaces/queryChunk";
 import { parse } from "yaml";
 
 const mainUrl = 'https://raw.githubusercontent.com/Roblox/creator-docs/main/content/en-us'
+const warningEmoji = '⚠️'
 
 // Example entry
 /**
@@ -75,7 +76,7 @@ export const command = new SlashCommandBuilder()
 function yamlToEmbed(yml: any) {
 	const embed = new EmbedBuilder()
 		.setTitle(`${yml.name}<${yml.type}>`)
-		.setDescription(`${yml.name}\n@tags \| ${yml.tags}\n\n${yml.summary}\n\n${yml.description}`)
+		.setDescription(`${(yml.deprecationMessage !== undefined) ? `${warningEmoji}${yml.deprecationMessage}` : ''}${yml.name}\n@tags \| ${yml.tags}\n\n${yml.summary}\n\n${yml.description}`)
 	return embed
 }
 	
@@ -118,12 +119,38 @@ export async function exec(client: Client, interaction: any) {
 			// vvv | Valid yaml file for documentation
 			// console.log(await fetched.text())
 
+			// Load buttons for extra data
+			const actions = new ActionRowBuilder()
+			const methods = new ButtonBuilder()
+				.setCustomId('methods')
+				.setLabel('Methods')
+				.setStyle(ButtonStyle.Primary)
+
+			const properties = new ButtonBuilder()
+				.setCustomId('properties')
+				.setLabel('Properties')
+				.setStyle(ButtonStyle.Primary)
+			actions.addComponents(methods, properties)
+
 			const parsedYaml = parse((await fetched.text()))
-			await confirmation.update({
+			const message = await confirmation.update({
 				embeds: [
 					yamlToEmbed(parsedYaml)
+				],
+				components: [
+					actions
 				]
 			})
+
+			const collectorFilter2 = (i: any) => i.user.id === interaction.user.id
+			const confirmation2 = await message.awaitMessageComponent({filter: collectorFilter2, time: 60000})
+			if (!confirmation2) {
+				await message.update({
+					components: []
+				})
+			}
+
+			// hello
 		}
 	} catch (e) {
 		console.log(e)
